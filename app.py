@@ -43,13 +43,28 @@ ax2.set_ylabel("OPM %")
 plt.xticks(rotation=45)
 st.pyplot(fig2)
 
+
 st.subheader("Net Profit Distribution by Profit Trend")
+
 plot_df = df.dropna(subset=["Profit_Trend"])
-groups = [plot_df.loc[plot_df["Profit_Trend"] == g, "Net_Profit"] for g in ["Profit Grew", "Profit Declined"]]
+
+groups = [
+    plot_df.loc[plot_df["Profit_Trend"] == g, "Net_Profit"].dropna()
+    for g in ["Profit Grew", "Profit Declined"]
+]
+
 fig3, ax3 = plt.subplots(figsize=(6, 4))
-ax3.boxplot(groups, labels=["Profit Grew", "Profit Declined"])
+
+ax3.boxplot(
+    groups,
+    tick_labels=["Profit Grew", "Profit Declined"]
+)
+
 ax3.set_ylabel("Net Profit (Rs Cr)")
+ax3.set_title("Net Profit Distribution")
 st.pyplot(fig3)
+plt.close(fig3)
+
 
 st.divider()
 
